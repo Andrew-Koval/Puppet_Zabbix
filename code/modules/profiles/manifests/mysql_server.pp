@@ -6,7 +6,6 @@ class profiles::mysql_server {
   $database = hiera('profiles::mysql_server::mysql_database::mysql_files::database')
   $source   = hiera('profiles::mysql_server::mysql_database::mysql_files::source')
   
-
   class { 'mysql_server':
     before => Mysql_database::Mysql_db['zabbix'],
 }
