@@ -1,6 +1,6 @@
 class zabbix_server::zabbix (
   $zabbix_src = [],
-  $dbhost = [],
+  $dbhost     = [],
 ) {
   package { 'zabbix_release':
     provider => 'rpm',
