@@ -1,7 +1,6 @@
 class profiles::httpd_server {
 
   class { 'https':
-    require => Class['zabbix_server::zabbix_configs'],
     before  => Class['httpd'],
   }
 
@@ -9,4 +8,3 @@ class profiles::httpd_server {
     require => Class['https'],
   }
 }
-
