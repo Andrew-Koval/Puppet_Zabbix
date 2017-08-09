@@ -1,0 +1,77 @@
+#
+# Zabbix monitoring system php web frontend
+#
+
+Alias /zabbix /usr/share/zabbix
+
+<Directory "/usr/share/zabbix">
+    Options FollowSymLinks
+    AllowOverride None
+    Order allow,deny
+    Allow from all
+
+    <IfModule mod_php5.c>
+        php_value max_execution_time 300
+        php_value memory_limit 128M
+        php_value post_max_size 16M
+        php_value upload_max_filesize 2M
+        php_value max_input_time 300
+        php_value date.timezone Europe/Kiev
+    </IfModule>
+</Directory>
+
+<Directory "/usr/share/zabbix/conf">
+    Order deny,allow
+    Deny from all
+    <files *.php>
+        Order deny,allow
+        Deny from all
+    </files>
+</Directory>
+
+<Directory "/usr/share/zabbix/api">
+    Order deny,allow
+    Deny from all
+    <files *.php>
+        Order deny,allow
+        Deny from all
+    </files>
+</Directory>
+
+<Directory "/usr/share/zabbix/include">
+    Order deny,allow
+    Deny from all
+    <files *.php>
+        Order deny,allow
+        Deny from all
+    </files>
+</Directory>
+
+<Directory "/usr/share/zabbix/include/classes">
+    Order deny,allow
+    Deny from all
+    <files *.php>
+        Order deny,allow
+        Deny from all
+    </files>
+</Directory>
+
+ServerName bazaarss.com:80
+
+<VirtualHost zabbix.bazaarss.com:80>
+    ServerName zabbix.bazaarss.com
+    Redirect "/" "https://zabbix.bazaarss.com/zabbix/"
+</VirtualHost>
+
+<VirtualHost zabbix.bazaarss.com:443>
+    ServerName zabbix.bazaarss.com
+    ServerAlias *.bazaarss.com
+    ServerAdmin admin@bazaarss.com
+    ErrorLog /var/log/httpd/zabbix.err
+    CustomLog /var/log/httpd/zabbix.log combined
+    SSLEngine on
+    SSLCertificateFile /etc/pki/tls/certs/bazaarss.crt
+    SSLCertificateKeyFile /etc/pki/tls/private/bazaarss.key
+    ProxyPreserveHost On
+    ProxyRequests Off
+</VirtualHost>
