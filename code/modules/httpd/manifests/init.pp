@@ -1,9 +1,9 @@
 class httpd (
-  $listen               = [ '80' ],
-  $namevirtualhost      = [],
-  $servername           = undef,
-  $httpd_version        = 'latest',
-  $service_restart      = '/sbin/service httpd reload',
+  $listen          = [ '80' ],
+  $namevirtualhost = [],
+  $servername      = undef,
+  $httpd_version   = 'latest',
+  $service_restart = '/sbin/service httpd reload',
 ) {
 
   package { 'httpd':
