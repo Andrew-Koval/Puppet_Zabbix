@@ -1,6 +1,6 @@
 class zabbix_server::zabbix (
-  $zabbix_src = 'http://repo.zabbix.com/zabbix/2.4/rhel/6/x86_64/zabbix-release-2.4-1.el6.noarch.rpm',
-  $dbhost = 'localhost',
+  $zabbix_src = [],
+  $dbhost = [],
 ) {
   package { 'zabbix_release':
     provider => 'rpm',

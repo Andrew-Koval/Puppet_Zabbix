@@ -2,8 +2,7 @@
 :backends:
   - yaml
 :hierarchy:
-  - "nodes/%{::trusted.certname}"
-  - common
+  - "%{::environment}/main"
 
 :yaml:
 # datadir is empty here, so hiera uses its defaults:

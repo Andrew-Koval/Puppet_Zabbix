@@ -1,5 +1,5 @@
 class zabbix_agent (
-  $server_active = '127.0.0.1',
+  $server_active = [],
 ){
   package { 'zabbix-agent':
     ensure  => 'latest',
