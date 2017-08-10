@@ -8,7 +8,7 @@ class profiles::mysql_server {
   
   class { 'mysql_server':
     before => Mysql_database::Mysql_db['zabbix'],
-}
+  }
 
   mysql_database::mysql_db {'zabbix':
     db_name  => $db_name,
