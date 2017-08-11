@@ -1,16 +1,16 @@
 class profiles::zabbix_server {
 
-  $zabbix_src = hiera('profiles::zabbix_server::zabbix_server::zabbix::zabbix_src')
-  $dbhost     = hiera('profiles::zabbix_server::zabbix_server::zabbix::dbhost')
+  $zabbix_src = hiera('profiles::zabbix_server::zabbix::zabbix_server::zabbix_src')
+  $dbhost     = hiera('profiles::zabbix_server::zabbix::zabbix_server::dbhost')
 
-  class { 'zabbix_server::zabbix':
+  class { 'zabbix::zabbix_server':
     zabbix_src => $zabbix_src,
     dbhost     => $dbhost,
-    before     => Class['zabbix_server::zabbix_configs'],
+    before     => Class['zabbix::zabbix_configs'],
   }
 
-  class { 'zabbix_server::zabbix_configs':
-    require => Class['zabbix_server::zabbix'],
+  class { 'zabbix::zabbix_configs':
+    require => Class['zabbix::zabbix_server'],
     notify  => Service['httpd'],
   }
 }
