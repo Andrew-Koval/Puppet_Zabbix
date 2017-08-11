@@ -13,13 +13,13 @@ class profiles::mysql_database {
 }
   
   mysql::mysql_files(
-    $source = $src
+    $source = $name
   ) {'dumps':
       database => $database,
       source   => $source,
       notify   => Service['zabbix-server'],
     }
 
-  notice("MySQL dump $src is uploaded")
+  notice("MySQL dump $name is uploaded")
 
   class { 'profiles::mysql_database': }
