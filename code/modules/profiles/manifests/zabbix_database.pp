@@ -8,7 +8,7 @@ class profiles::zabbix_database {
     before => Mysql::Mysql_database['zabbix'],
   }
 
-  mysql::mysql_database {'zabbix':
+  mysql::mysql_database {"$db_name":
     db_name  => $db_name,
     user     => $user,
     password => $password,
