@@ -1,8 +1,10 @@
 define mysql::mysql_files (
   $database = [],
-  $source   = [], 
+  $source   = [],
+  $service  = [],
 ) {
-  exec { 'dump':
+  exec { "$source":
     command => "/usr/bin/mysql -uroot $database < $source",
+    notify  => Service["$service"],
   }
 }
