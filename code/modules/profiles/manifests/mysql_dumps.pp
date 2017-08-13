@@ -14,8 +14,9 @@ class profiles::mysql_dumps {
 }
 
   mysql::mysql_files {"$source":
-    database => 'zabbix',
+    database => $database,
     source   => $source,
+    notify   => Service['zabbix-server'],
   }
 
   notice("MySQL dump $source is uploaded")
