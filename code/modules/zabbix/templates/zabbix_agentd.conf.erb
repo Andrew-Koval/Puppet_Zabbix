@@ -134,8 +134,6 @@ ServerActive=<%= @server_active %>
 # Default:
 # Hostname=
 
-#Hostname=Zabbix server
-
 ### Option: HostnameItem
 #	Item used for generating Hostname if it is undefined. Ignored if Hostname is defined.
 #	Does not support UserParameters or aliases.
@@ -143,8 +141,6 @@ ServerActive=<%= @server_active %>
 # Mandatory: no
 # Default:
 # HostnameItem=system.hostname
-
-HostnameItem=<%= @host_metadata_item %>
 
 ### Option: HostMetadata
 #	Optional parameter that defines host metadata.
@@ -167,6 +163,8 @@ HostnameItem=<%= @host_metadata_item %>
 # Mandatory: no
 # Default:
 # HostMetadataItem=
+
+HostMetadataItem=<%= @host_metadata_item %>
 
 ### Option: RefreshActiveChecks
 #	How often list of active checks is refreshed, in seconds.
