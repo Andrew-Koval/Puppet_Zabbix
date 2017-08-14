@@ -1,4 +1,3 @@
-
 class profiles::mysql_dumps {
 
   $database = hiera('profiles::mysql_database::mysql::mysql_files::database')
