@@ -1,22 +1,12 @@
-class zabbix::zabbix_agent (
-  $server             = [],
-  $server_active      = [],
-  $host_metadata_item = [],
-){
-  package { 'zabbix-agent':
-    ensure  => 'latest',
-  }
+class profiles::zabbix_agent {
 
-  file { '/etc/zabbix/zabbix_agentd.conf':
-    require => Package['zabbix-agent'],
-    content => template('zabbix/zabbix_agentd.conf.erb'),
-    notify  => Service['zabbix-agent'],
-  }
+  $server             = hiera('profiles::zabbix_agent::zabbix::zabbix_agent::server')
+  $server_active      = hiera('profiles::zabbix_agent::zabbix::zabbix_agent::server_active')
+  $host_metadata_item = hiera('profiles::zabbix_agent::zabbix::zabbix_agent::host_metadata_item')
 
-  service { 'zabbix-agent':
-    ensure    => running,
-    enable    => true,
-    hasstatus => true,
-    require   => Package['zabbix-agent'],
+  class { 'zabbix::zabbix_agent':
+    server             => $server,
+    server_active      => $server_active,
+    host_metadata_item => $host_metadata_item,
   }
 }
