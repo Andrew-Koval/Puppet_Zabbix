@@ -5,8 +5,6 @@ ZABBIX_PASS='zabbix'
 ACTION_NAME='Linux_Host_Auto_Registration'
 API='https://zabbix.bazaarss.com/zabbix/api_jsonrpc.php'
 
-#service zabbix-agent stop
-
 authenticate() {
  curl -i -k -X POST -H 'Content-Type: application/json-rpc' -d '{
      "jsonrpc":"2.0",
@@ -69,6 +67,5 @@ if [ $exit_code -ne 0 ]
         exit
  else
      	echo -e "\nCreation of autoregistry completed successfully at `date`:, starting Zabbix Agent\n"
-        service zabbix-agent start
         exit
  fi
