@@ -5,16 +5,58 @@ ZABBIX_PASS='zabbix'
 ACTION_NAME='Linux_Host_Auto_Registration'
 API='https://zabbix.bazaarss.com/zabbix/api_jsonrpc.php'
 
-service zabbix-agent stop
+#service zabbix-agent stop
 
 authenticate() {
-  curl -i -k -X POST -H 'Content-Type: application/json-rpc' -d '{"jsonrpc":"2.0", "method":"user.login", "params":{"user":"'$ZABBIX_USER'", "password":"'$ZABBIX_PASS'"}, "id":1, "auth":null}' $API
+ curl -i -k -X POST -H 'Content-Type: application/json-rpc' -d '{
+     "jsonrpc":"2.0",
+     "method":"user.login",
+     "params":{
+         "user": "'$ZABBIX_USER'",
+         "password": "'$ZABBIX_PASS'"},
+         "id":1,
+         "auth":null}' $API | tail -n 1 | cut -c28-59
 }
 
 AUTH_TOKEN=$(authenticate)
+echo $AUTH_TOKEN
 
 autoregistry() {
-  curl -i -k -X POST -H 'Content-Type: application/json-rpc' -d '{"jsonrpc": "2.0", "method": "action.create", "params":{"name":"'$ACTION_NAME'", "eventsource": 2, "status": 0, "esc_period": 120, "filter":{"conditions":[{"conditiontype": 24, "operator": 0, "value": "Linux"}]}, "operations": [{"operationtype": 2}, {"operationtype": 6, "optemplate":[{"templateid": "10001"}]}]}, "auth": "'$AUTH_TOKEN'", "id":1}' $API
+ curl -i -k -X POST -H 'Content-Type: application/json-rpc' -d '{
+    "jsonrpc": "2.0",
+    "method": "action.create",
+    "params": {
+        "name": "Linux Host Auto Registration",
+        "eventsource": 2,
+        "status": 0,
+        "esc_period": 120,
+        "filter": {
+            "evaltype": 0, 
+            "conditions": [
+                {
+                    "conditiontype": 24,
+                    "operator": 0,
+                    "value": "Linux"
+                }
+            ]
+        },
+        "operations": [
+            {
+                "operationtype": 2
+            },
+            {
+                "operationtype": 6,
+                "optemplate": [
+                       {
+                         "templateid": "10001"
+                       }
+               ]
+            }
+        ]    
+    },
+    "auth": "'$AUTH_TOKEN'",
+    "id": 1
+}' $API
 }
 
 output=$(autoregistry)
