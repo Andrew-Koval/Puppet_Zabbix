@@ -14,6 +14,6 @@ class profiles::mysql_dumps {
       source   => $schemas,
       notify   => Service['zabbix-server'],
     }
-    notice("MySQL dump $source is uploaded")
+    notice("MySQL dump $schemas is uploaded")
     }
 }
