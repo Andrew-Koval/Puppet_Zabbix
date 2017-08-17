@@ -8,17 +8,12 @@ class profiles::mysql_dumps {
 
   notice ($dump)
 
-  $dump.each |$schemas| {
-    mysql::mysql_files{ $schemas: source => $schemas }
-  }
+    $dump.each |$schemas| {
+    mysql::mysql_files { $schemas:
+      database => $database,
+      source   => $schemas,
+      notify   => Service['zabbix-server'],
+    }
+    notice("MySQL dump $source is uploaded")
+    }
 }
-
-  mysql::mysql_files {"$source":
-    database => $database,
-    source   => $source,
-    notify   => Service['zabbix-server'],
-  }
-
-  notice("MySQL dump $source is uploaded")
-
-  class { 'profiles::mysql_dumps': }
