@@ -1,60 +1,68 @@
 #!/bin/bash
 
-ZABBIX_USER='Admin'
-ZABBIX_PASS='zabbix'
-ACTION_NAME='Linux_Host_Auto_Registration'
-API='https://zabbix.bazaarss.com/zabbix/api_jsonrpc.php'
+USERNAME='Admin'
+PASSWORD='zabbix'
+API_URL='https://zabbix.bazaarss.com/zabbix/api_jsonrpc.php'
+ACTION_NAME=("Linux_Autoregistration" "Windows_Autoregistration" "MacOSX_Autoregistration" "FreeBSD_Autoregistration")
+META_VALUE=("Linux" "Windows" "MacOS" "FreeBSD")
+TEMPLATE_ID=("10001" "10081" "10079" "10075")
 
 authenticate() {
- curl -i -k -X POST -H 'Content-Type: application/json-rpc' -d '{
+ curl -k -X POST -H 'Content-Type: application/json-rpc' -d '{
      "jsonrpc":"2.0",
      "method":"user.login",
      "params":{
-         "user": "'$ZABBIX_USER'",
-         "password": "'$ZABBIX_PASS'"},
+         "user": "'$USERNAME'",
+         "password": "'$PASSWORD'"},
          "id":1,
-         "auth":null}' $API | tail -n 1 | cut -c28-59
+         "auth":null}' $API_URL | cut -c28-59
 }
 
-AUTH_TOKEN=$(authenticate)
-echo $AUTH_TOKEN
+TOKENS=$(authenticate)
 
 autoregistry() {
- curl -i -k -X POST -H 'Content-Type: application/json-rpc' -d '{
-    "jsonrpc": "2.0",
-    "method": "action.create",
-    "params": {
-        "name": "Linux Host Auto Registration",
-        "eventsource": 2,
-        "status": 0,
-        "esc_period": 120,
-        "filter": {
-            "evaltype": 0, 
-            "conditions": [
-                {
-                    "conditiontype": 24,
-                    "operator": 0,
-                    "value": "Linux"
-                }
-            ]
-        },
-        "operations": [
-            {
-                "operationtype": 2
-            },
-            {
-                "operationtype": 6,
-                "optemplate": [
-                       {
-                         "templateid": "10001"
-                       }
-               ]
-            }
-        ]    
-    },
-    "auth": "'$AUTH_TOKEN'",
-    "id": 1
-}' $API
+total=${#ACTION_NAME[*]}
+  for (( i=0; i<=$(( $total -1 )); i++ ))
+     do
+	 curl -k -X POST -H 'Content-Type: application/json-rpc' -d '{
+	    "jsonrpc": "2.0",
+	    "method": "action.create",
+	    "params": {
+		"name": "'${ACTION_NAME[$i]}'",
+		"eventsource": 2,
+		"status": 0,
+		"esc_period": 120,
+		"filter": {
+		    "evaltype": 0, 
+		    "conditions": [
+		        {
+		            "conditiontype": 24,
+		            "operator": 2,
+		            "value": "'${META_VALUE[$i]}'"
+		        }
+		    ]
+		},
+		"operations": [
+		    {
+		        "operationtype": 2
+		    },
+		    {
+		        "operationtype": 6,
+		        "optemplate": [
+		               {
+		                 "templateid": "'${TEMPLATE_ID[$i]}'"
+		               }
+		       ]
+		    }
+		]    
+	    },
+	    "auth": "'$TOKENS'",
+	    "id": 1
+	}' $API_URL
+  echo ${ACTION_NAME[$i]}
+  echo ${META_VALUE[$i]}
+  echo ${TEMPLATE_ID[$i]}
+  done
 }
 
 output=$(autoregistry)
@@ -62,10 +70,10 @@ output=$(autoregistry)
 exit_code=$?
 
 if [ $exit_code -ne 0 ]
- then
-     	echo -e "Error in autoregistry creation at `date`:\n"
+   then
+     	echo -e "Error in autoregistry creation\n"
         exit
- else
-     	echo -e "\nCreation of autoregistry completed successfully at `date`:, starting Zabbix Agent\n"
+   else
+     	echo -e "\nCreation of autoregistry completed successfully\n"
         exit
- fi
+fi

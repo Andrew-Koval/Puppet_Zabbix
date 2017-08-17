@@ -1,6 +1,20 @@
 class zabbix::zabbix_server (
-  $zabbix_src = [],
-  $dbhost     = [],
+  $zabbix_src      = [],
+  $dbhost          = [],
+  $dbname          = [],
+  $dbuser          = [],
+  $dbpassword      = [],
+  $dbtype          = [],
+  $dbserver        = [],
+  $dbport          = [],
+  $dbdatabase      = [],
+  $db_user         = [],
+  $db_password     = [],
+  $dbschema        = undef,
+  $zbx_server      = [],
+  $zbx_server_port = [],
+  $zbx_server_name = undef,
+  $image_format    = [],
 ) {
   package { 'zabbix_release':
     provider => 'rpm',
@@ -27,6 +41,12 @@ class zabbix::zabbix_server (
   file { '/etc/zabbix/zabbix_server.conf':
     require => Package['zabbix-server'],
     content => template('zabbix/zabbix_server.conf.erb'),
+    notify  => Service['zabbix-server'],
+  }
+
+  file { '/etc/zabbix/web/zabbix.conf.php':
+    require => Package['zabbix-server'],
+    content => template('zabbix/zabbix.conf.php.erb'),
     notify  => Service['zabbix-server'],
   }
 

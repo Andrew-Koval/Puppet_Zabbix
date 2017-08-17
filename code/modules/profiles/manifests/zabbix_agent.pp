@@ -1,8 +1,12 @@
 class profiles::zabbix_agent {
 
-  $server_active = hiera('profiles::zabbix_agent::zabbix::zabbix_agent::server_active')
+  $server             = hiera('profiles::zabbix_agent::zabbix::zabbix_agent::server')
+  $server_active      = hiera('profiles::zabbix_agent::zabbix::zabbix_agent::server_active')
+  $host_metadata_item = hiera('profiles::zabbix_agent::zabbix::zabbix_agent::host_metadata_item')
 
   class { 'zabbix::zabbix_agent':
-    server_active => $server_active,
+    server             => $server,
+    server_active      => $server_active,
+    host_metadata_item => $host_metadata_item,
   }
 }

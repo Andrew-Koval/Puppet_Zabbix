@@ -81,7 +81,7 @@ DBHost=<%= @dbhost %>
 # Default:
 # DBName=
 
-DBName=zabbix
+DBName=<%= @dbname %>
 
 ### Option: DBSchema
 #	Schema name. Used for IBM DB2 and PostgreSQL.
@@ -97,7 +97,7 @@ DBName=zabbix
 # Default:
 # DBUser=
 
-DBUser=zabbix
+DBUser=<%= @dbuser %>
 
 ### Option: DBPassword
 #	Database password. Ignored for SQLite.
@@ -107,7 +107,7 @@ DBUser=zabbix
 # Default:
 # DBPassword=
 
-DBPassword=zabbix
+DBPassword=<%= @dbpassword %>
 
 ### Option: DBSocket
 #	Path to MySQL socket.
