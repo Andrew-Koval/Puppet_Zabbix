@@ -1,7 +1,7 @@
 class profiles::mysql_dumps {
 
   $database = hiera('profiles::mysql_database::mysql::mysql_files::database')
-  $source   = hiera_array('profiles::mysql_database::mysql::mysql_files::source')
+  $source   = hiera('profiles::mysql_database::mysql::mysql_files::source')
   $dump     = ["$source"]
 
   notice ($dump)
