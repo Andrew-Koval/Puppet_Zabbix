@@ -6,7 +6,7 @@ class profiles::mysql_dumps {
 
   notice ($dump)
 
-    $dump.slice |$schemas| {
+    $dump.each |$schemas| {
     mysql::mysql_files { $schemas:
       database => $database,
       source   => $schemas,
