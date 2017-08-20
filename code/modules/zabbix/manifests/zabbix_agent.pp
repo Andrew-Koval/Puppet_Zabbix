@@ -1,10 +1,14 @@
+#
+#  ==== Installation of Zabbix Agent ====
+#
+
 class zabbix::zabbix_agent (
   $server             = [],
   $server_active      = [],
   $host_metadata_item = [],
-){
+) {
   package { 'zabbix-agent':
-    ensure  => 'latest',
+    ensure => 'latest',
   }
 
   file { '/etc/zabbix/zabbix_agentd.conf':

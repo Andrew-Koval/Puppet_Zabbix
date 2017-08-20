@@ -1,3 +1,7 @@
+#
+#  ==== Profile for installation of Zabbix Agent ====
+#
+
 class profiles::zabbix_agent {
 
   $server             = hiera('profiles::zabbix_agent::zabbix::zabbix_agent::server')

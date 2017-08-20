@@ -1,5 +1,9 @@
+#
+#  ==== Installation of Zabbix Server ====
+#
+
 class zabbix::zabbix_server (
-  $zabbix_src      = [],
+  $baseurl         = [],
   $dbhost          = [],
   $dbname          = [],
   $dbuser          = [],
@@ -16,16 +20,16 @@ class zabbix::zabbix_server (
   $zbx_server_name = undef,
   $image_format    = [],
 ) {
-  package { 'zabbix_release':
-    provider => 'rpm',
-    ensure   => installed,
-    source   => "$zabbix_src",
-    before   => Package['zabbix-server'],
+  yumrepo { 'zabbix':
+    enabled  => 1,
+    descr    => 'Zabbix Official Repository - $basearch',
+    baseurl  => $baseurl,
+    gpgcheck => 0,
   }
 
   package { 'zabbix-server':
-    ensure  => 'latest',
-    require => Package['zabbix_release'],
+    ensure  => 'installed',
+    require => Yumrepo['zabbix'],
   }
 
   package { 'zabbix-server-mysql':

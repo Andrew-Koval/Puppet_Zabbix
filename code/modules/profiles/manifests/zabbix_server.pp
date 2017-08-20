@@ -1,6 +1,10 @@
+#
+#  ==== Profile for installation of Zabbix Server and Apache HTTPD Web Server with configuration files ====
+#
+
 class profiles::zabbix_server {
 
-  $zabbix_src      = hiera('profiles::zabbix_server::zabbix::zabbix_server::zabbix_src')
+  $baseurl         = hiera('profiles::zabbix_server::zabbix::zabbix_server::baseurl')
   $dbhost          = hiera('profiles::zabbix_server::zabbix::zabbix_server::dbhost')
   $dbname          = hiera('profiles::zabbix_server::zabbix::zabbix_server::dbname')
   $dbuser          = hiera('profiles::zabbix_server::zabbix::zabbix_server::dbuser')
@@ -16,7 +20,7 @@ class profiles::zabbix_server {
   $image_format    = hiera('profiles::zabbix_server::zabbix::zabbix_server::image_format')
 
   class { 'zabbix::zabbix_server':
-    zabbix_src      => $zabbix_src,
+    baseurl         => $baseurl,
     dbhost          => $dbhost,
     dbname          => $dbname,
     dbuser          => $dbuser,
@@ -30,11 +34,14 @@ class profiles::zabbix_server {
     zbx_server      => $zbx_server,
     zbx_server_port => $zbx_server_port,
     image_format    => $image_format,
-    before          => Class['zabbix::zabbix_configs'],
+    before          => Class['httpd'],
+  }
+
+  class { 'httpd':
+    require => Class['zabbix::zabbix_server'],
   }
 
   class { 'zabbix::zabbix_configs':
-    require => Class['zabbix::zabbix_server'],
-    notify  => Service['httpd'],
+    notify => Service['httpd'],
   }
 }

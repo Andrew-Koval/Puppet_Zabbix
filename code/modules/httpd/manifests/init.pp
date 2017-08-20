@@ -1,3 +1,7 @@
+#
+#  ==== Installation of Apache HTTPD Server with TLS certificates ====
+#
+
 class httpd (
   $https           = true,
   $listen          = ['80'],
@@ -29,17 +33,17 @@ class httpd (
       ensure => installed,
       notify => Service['httpd'],
     }
-    
+
     package { 'openssl':
-      ensure  => 'installed',
+      ensure => 'installed',
     }
 
     file { '/etc/pki/tls/certs/bazaarss.crt':
-      owner   => 'root',
-      group   => 'root',
-      mode    => '0644',
-      source  => 'puppet:///modules/httpd/bazaarss.crt',
-      before  => File['/etc/pki/tls/private/bazaarss.key'],
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0644',
+      source => 'puppet:///modules/httpd/bazaarss.crt',
+      before => File['/etc/pki/tls/private/bazaarss.key'],
     }
 
     file { '/etc/pki/tls/private/bazaarss.key':

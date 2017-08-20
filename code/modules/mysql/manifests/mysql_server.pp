@@ -1,3 +1,7 @@
+#
+#  ==== Installation of MySQL Server ====
+#
+
 class mysql::mysql_server {
   package { 'mysql-server':
     ensure => installed,
