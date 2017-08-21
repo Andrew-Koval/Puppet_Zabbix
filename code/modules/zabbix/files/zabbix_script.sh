@@ -2,10 +2,10 @@
 
 USERNAME='Admin'
 PASSWORD='zabbix'
-ACTION_NAME='Linux_Autoregistration'
 API_URL='https://zabbix.bazaarss.com/zabbix/api_jsonrpc.php'
-META_VALUE='Linux'
-TEMPLATE_ID='10001'
+ACTION_NAME=("Linux_Autoregistration" "Windows_Autoregistration" "MacOSX_Autoregistration" "FreeBSD_Autoregistration")
+META_VALUE=("Linux" "Windows" "MacOS" "FreeBSD")
+TEMPLATE_ID=("10001" "10081" "10079" "10075")
 
 authenticate() {
  curl -k -X POST -H 'Content-Type: application/json-rpc' -d '{
@@ -25,7 +25,7 @@ autoregistry() {
     "jsonrpc": "2.0",
     "method": "action.create",
     "params": {
-        "name": "'$ACTION_NAME'",
+        "name": "'${ACTION_NAME[$1]}'",
         "eventsource": 2,
         "status": 0,
         "esc_period": 120,
@@ -37,7 +37,7 @@ autoregistry() {
                 {
                     "conditiontype": 24,
                     "operator": 2,
-                    "value": "'$META_VALUE'"
+                    "value": "'${META_VALUE[$2]}'"
                 }
             ]
         },
@@ -49,7 +49,7 @@ autoregistry() {
                 "operationtype": 6,
                 "optemplate": [
                        {
-                         "templateid": "'$TEMPLATE_ID'"
+                         "templateid": "'${TEMPLATE_ID[$3]}'"
                        }
                ]
             }
@@ -60,7 +60,16 @@ autoregistry() {
 }' $API_URL
 }
 
-output=$(autoregistry)
+
+iterate () {
+  total=${#ACTION_NAME[*]}
+  for (( i=0; i<=$(( $total -1 )); i++ ))
+     do
+       autoregistry i
+     done
+}
+
+iterate 
 
 exit_code=$?
 
