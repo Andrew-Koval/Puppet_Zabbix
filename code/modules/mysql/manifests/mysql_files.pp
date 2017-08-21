@@ -3,11 +3,11 @@
 #
 
 define mysql::mysql_files (
-  $database = [],
+  $database,
   $source   = [],
-  $table    = [],
-  $field    = [],
-  $value    = [],
+  $table,
+  $field,
+  $value,
 ) {
   exec { $source:
     path    => ['/bin', '/usr/bin'],
