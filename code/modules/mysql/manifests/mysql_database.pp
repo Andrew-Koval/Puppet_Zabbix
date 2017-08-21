@@ -3,9 +3,9 @@
 #
 
 define mysql::mysql_database (
-  $db_name  = [],
-  $user     = [],
-  $password = [],
+  $db_name,
+  $user,
+  $password,
 ) {
   exec { 'create-database':
     path    => ['/bin', '/usr/bin'],
