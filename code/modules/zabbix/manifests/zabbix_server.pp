@@ -14,11 +14,11 @@ class zabbix::zabbix_server (
   $dbdatabase,
   $db_user,
   $db_password,
-  $dbschema        = undef,
   $zbx_server,
   $zbx_server_port,
-  $zbx_server_name = undef,
   $image_format,
+  $dbschema        = undef,
+  $zbx_server_name = undef,
 ) {
   yumrepo { 'zabbix':
     enabled  => 1,
