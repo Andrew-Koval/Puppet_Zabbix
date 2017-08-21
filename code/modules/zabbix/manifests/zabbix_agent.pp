@@ -3,9 +3,9 @@
 #
 
 class zabbix::zabbix_agent (
-  $server             = [],
-  $server_active      = [],
-  $host_metadata_item = [],
+  $server,
+  $server_active,
+  $host_metadata_item,
 ) {
   package { 'zabbix-agent':
     ensure => 'latest',
