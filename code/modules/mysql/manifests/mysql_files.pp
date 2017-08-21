@@ -4,10 +4,10 @@
 
 define mysql::mysql_files (
   $database,
-  $source   = [],
   $table,
   $field,
   $value,
+  $source = [],
 ) {
   exec { $source:
     path    => ['/bin', '/usr/bin'],
